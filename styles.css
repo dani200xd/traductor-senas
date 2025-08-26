@@ -1,0 +1,483 @@
+/* --- Propiedades personalizadas --- */
+@property --c-0 {
+  syntax: '<color>';
+  inherits: false;
+  initial-value: hsla(212, 0%, 0%, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* Contenedor principal */
+.container {
+  margin-top: 19vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.animated-text {
+  font-size: 2.2em;
+  color: white;
+  display: inline-block;
+  margin-bottom: 30px;
+  animation: smoothCircle 10s linear infinite;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button-group button {
+  margin: 20px;
+  padding: 12px 32px;
+  font-size: 1.3em;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #0e1844;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.button-group button:hover {
+  background-color: #ff7043;
+  animation: pulse 0.4s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+.logo-container {
+  margin-top: 40px;
+}
+
+.logo {
+  width: 470px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: pulseZoom 3s ease-in-out infinite;
+}
+
+@keyframes pulseZoom {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.95; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- Traductor texto/audio --- */
+.translator {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.video-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.video-stream {
+  width: 100%;
+  max-width: 900px;
+  height: 600px;
+  object-fit: cover;
+  border: 4px solid #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
+}
+
+.centered-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 20px auto;
+}
+
+textarea#translated-text {
+  width: 100%;
+  min-height: 180px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-size: 1.6em;
+  border-radius: 0px;
+  resize: none;
+  background-color: #fff;
+  color: #333;
+  box-sizing: border-box;
+  border: none;
+}
+
+/* --- Botones sección texto/audio --- */
+.translator .buttons-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+  position: relative; /* permite mover con top/left */
+  top: 0px; /* ajustable en px */
+  left: -20px; /* ajustable en px */
+}
+
+.translator .buttons-row button.clear-btn {
+  background-color: #f44336 !important;
+  color: white !important;
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s, transform 0.3s;
+  order: 1; /* izquierda */
+}
+
+.translator .buttons-row button.clear-btn:hover {
+  background-color: #d32f2f !important;
+  animation: pulse 0.4s ease-in-out;
+}
+
+.translator .buttons-row button#audio-button,
+.translator .buttons-row button#speak-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  border: none;
+  order: 2; /* centro */
+}
+
+.translator .buttons-row button#audio-button:hover,
+.translator .buttons-row button#speak-btn:hover {
+  background-color: #388e3c;
+  animation: pulse 0.4s ease-in-out;
+}
+
+/* NUEVO BOTÓN: borrar última letra 🗑️ */
+.translator .buttons-row button.delete-last-btn {
+  background-color: #75756e !important;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s, transform 0.3s;
+  min-width: 120px;
+  order: 3;
+}
+
+
+.translator .buttons-row button.delete-last-btn:hover {
+  background-color: #75756e ;
+  animation: pulse 0.4s ease-in-out;
+}
+
+/* Botón volver al menú */
+.translator .back-button {
+  background-color: #1976d2;
+  color: white;
+  margin-top: -15px;
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  cursor: pointer;
+  align-self: center;
+  transition: background-color 0.3s, transform 0.3s;
+  display: block;
+  width: max-content;
+  margin-left: auto;
+  margin-right: auto;
+  border: none;
+}
+
+.translator .back-button:hover {
+  background-color: #1976d2;
+  animation: pulse 0.4s ease-in-out;
+}
+
+/* --- Traductor imágenes --- */
+.images-translator {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 80%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+textarea#input-word {
+  font-size: 2em;
+  padding: 10px;
+  border-radius: 8px;
+  resize: none;
+  width: 600px;
+  max-width: 600px;
+  color: #333;
+  background-color: #fff;
+  box-sizing: border-box;
+  position: absolute;
+  top: 520px;
+  left: 24%;
+  transform: translateX(-50%);
+  border: none;
+  z-index: 10;
+}
+
+/* Contenedor que agrupa y mueve todos los botones juntos */
+#buttons-row {
+  position: relative;
+  left: -520px;
+  top: 640px;
+  display: flex;
+  gap: 15px;
+  width: 80%;
+  max-width: 600px;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+/* Contenedor del botón volver al menú */
+#back-button-container {
+  position: relative;
+  left: -520px;
+  top: 650px;
+  width: 80%;
+  max-width: 600px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Botones sección imágenes */
+#buttons-row button {
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 120px;
+  transition: background-color 0.3s, transform 0.3s;
+  border: none;
+}
+
+#buttons-row .audio-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+#buttons-row .audio-button:hover {
+  background-color: #388e3c;
+  animation: pulse 0.4s ease-in-out;
+}
+
+/* Botón borrar texto en imágenes */
+#buttons-row .clear-btn {
+  display: inline-block;
+  cursor: pointer;
+  background-color: #f44336;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  border: none;
+  min-width: 120px;
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 1;
+  user-select: none;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#buttons-row .clear-btn:hover {
+  background-color: #d32f2f;
+  animation: pulse 0.4s ease-in-out;
+}
+
+#back-button-container .back-button {
+  background-color: #1976d2;
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.3em;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  width: 80%;
+  max-width: 600px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  border: none;
+}
+
+#back-button-container .back-button:hover {
+  background-color: #1976d2;
+  animation: pulse 0.4s ease-in-out;
+}
+
+:root {
+  --sign-img-size: 80px;
+}
+
+/* --- CONTENEDOR DE IMÁGENES PEQUEÑAS --- */
+#sign-images-container {
+  position: absolute;
+  top: 16vh;
+  left: 41vw;
+  width: 70vw;
+  padding: 10px;
+  border-radius: 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  gap: 55px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* Contenedor para cada línea de palabras */
+.line-container {
+  display: flex;
+  flex-direction: row;
+  gap: 70px;
+}
+
+/* Contenedor para cada palabra (letras) */
+.word-container {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+}
+
+/* Animación de aparición tipo barrido de izquierda a derecha */
+@keyframes sweepRight {
+  0% { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+#sign-images-container img {
+  width: var(--sign-img-size);
+  height: var(--sign-img-size);
+  object-fit: contain;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  opacity: 0;
+  animation-name: sweepRight;
+  animation-duration: 0.15s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+#sign-images-container img:nth-child(1) { animation-delay: 0.05s; }
+#sign-images-container img:nth-child(2) { animation-delay: 0.15s; }
+#sign-images-container img:nth-child(3) { animation-delay: 0.25s; }
+#sign-images-container img:nth-child(4) { animation-delay: 0.35s; }
+#sign-images-container img:nth-child(5) { animation-delay: 0.45s; }
+#sign-images-container img:nth-child(6) { animation-delay: 0.55s; }
+#sign-images-container img:nth-child(7) { animation-delay: 0.65s; }
+#sign-images-container img:nth-child(8) { animation-delay: 0.75s; }
+#sign-images-container img:nth-child(9) { animation-delay: 0.85s; }
+#sign-images-container img:nth-child(10) { animation-delay: 0.95s; }
+
+/* --- Posicionamiento del logo en la sección de imágenes --- */
+.images-logo-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 380px;
+}
+
+.images-logo {
+  width: 315px;
+  height: auto;
+  transition: transform 0.3s ease;
+  position: relative;
+  top: -300px;
+  left: -515px;
+}
+
+.images-logo:hover {
+  transform: scale(1.05);
+}
+
+.big-sign-image { opacity: 0; border-radius: 12px; }
+.big-letter { z-index: 999; }
+
+.fade-in { animation: fadeIn 0.5s ease-in-out forwards; }
+.fade-out { animation: fadeOut 0.5s ease-in-out forwards; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+/* Agrandar texto del título */
+#main-menu .animated-text {
+  font-size: 2.6em;
+  margin-bottom: 40px;
+}
+
+/* Agrandar botones */
+#main-menu .button-group button {
+  padding: 18px 40px;
+  font-size: 1.7em;
+  border-radius: 14px;
+}
+
+/* Agrandar logo */
+#main-menu .logo-container .logo {
+  width: 500px;
+  height: auto;
+}
+

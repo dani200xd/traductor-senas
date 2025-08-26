@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Traductor de Lengua de Señas</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="fondo"></canvas>
+
+  <div class="container" id="main-menu">
+    <h1 class="animated-text">¿Deseas traducir lengua de señas a texto, audio o imágenes?</h1>
+    <div class="button-group">
+      <button onclick="startTranslation('text')">Texto</button>
+      <button onclick="startTranslation('audio')">Audio</button>
+      <button onclick="startTranslation('images')">Imágenes</button>
+    </div>
+    <div class="logo-container">
+      <img src="https://i.imgur.com/lNMsisf.png" alt="Logo del Traductor" class="logo" />
+    </div>
+  </div>
+
+  <div class="translator" id="translator" style="display: none;">
+    <div class="video-box">
+      <img
+        id="video"
+        src="http://localhost:5000/video_feed"
+        alt="Video procesado en vivo"
+        crossorigin="anonymous"
+        class="video-stream"
+      />
+    </div>
+
+    <div class="centered-block">
+      <textarea
+        id="translated-text"
+        readonly
+      >Esperando señas...</textarea>
+
+      <div class="buttons-row">
+        <button
+          id="clear-text-btn"
+          class="clear-btn"
+          onclick="clearText('translated-text')"
+        >
+          Eliminar texto
+        </button>
+
+        <button
+          id="delete-last-letter-btn"
+          class="clear-btn delete-last-btn"
+          onclick="deleteLastLetter()"
+        >
+          🗑️
+        </button>
+
+        <button
+          id="speak-btn"
+          class="audio-button"
+          style="display: none"
+          onclick="speakText()"
+        >
+          Reproducir Audio🔊
+        </button>
+      </div>
+    </div>
+
+    <button class="back-button" onclick="goBack()">⬅ Volver al menú</button>
+  </div>
+
+  <div
+    class="images-translator"
+    id="images-translator"
+    style="display: none; flex-direction: column; align-items: center"
+  >
+    <textarea
+      id="input-word"
+      placeholder="Escribe o habla la palabra aquí..."
+      rows="3"
+    ></textarea>
+
+    <div id="buttons-row">
+      <button
+        id="mic-btn-images"
+        class="audio-button"
+        onclick="toggleMic()"
+      >
+        Activar micrófono🎤
+      </button>
+
+      <button
+        id="translate-word-btn"
+        class="audio-button"
+        onclick="translateWord()"
+      >
+        Traducir
+      </button>
+      <button
+        id="clear-text-images-btn"
+        class="clear-btn"
+        onclick="clearText('input-word')"
+      >
+        Borrar texto
+      </button>
+    </div>
+
+    <div id="back-button-container">
+      <button class="back-button" onclick="goBack()">⬅ Volver al menú</button>
+    </div>
+
+    <div id="sign-images-container"></div>
+
+    <div class="images-logo-container">
+      <img
+        src="https://i.imgur.com/lNMsisf.png"
+        alt="Logo del Traductor"
+        class="images-logo logo"
+      />
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("fondo");
+    const ctx = canvas.getContext("2d");
+    let width, height;
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.radius = 3 + Math.random() * 4;
+        this.speedX = (Math.random() - 0.5) * 0.2;
+        this.speedY = (Math.random() - 0.5) * 0.2;
+        this.alpha = 0.2 + Math.random() * 0.5;
+        this.alphaSpeed = 0.002 + Math.random() * 0.003;
+        const colors = ["#ffffff", "#b3ffff", "#80dfff", "#e0ffff"];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > width) this.speedX *= -1;
+        if (this.y < 0 || this.y > height) this.speedY *= -1;
+        this.alpha += this.alphaSpeed;
+        if (this.alpha > 0.8 || this.alpha < 0.2) this.alphaSpeed *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        const gradient = ctx.createRadialGradient(
+          this.x,
+          this.y,
+          0,
+          this.x,
+          this.y,
+          this.radius
+        );
+        gradient.addColorStop(0, this.color + "aa");
+        gradient.addColorStop(1, this.color + "00");
+        ctx.fillStyle = gradient;
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const particles = Array.from({ length: 50 }, () => new Particle());
+
+    function drawBackground() {
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, "#0d47a1");
+      gradient.addColorStop(1, "#81d4fa");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    function animate() {
+      drawBackground();
+      for (let p of particles) {
+        p.update();
+        p.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
